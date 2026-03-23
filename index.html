@@ -4,242 +4,796 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2 Steps Ahead Data Consulting, LLC</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <meta name="description" content="Boutique statistical consulting for government, life sciences, and agriculture. PhD-level experimental design, advanced modeling, and data strategy.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    /* ═══════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════ */
     :root {
-      --primary: #1f3a5f;
-      --accent: #3b82f6;
-      --bg: #f8fafc;
-      --text: #1e293b;
-      --muted: #64748b;
+      --navy:        #0B1D33;
+      --navy-mid:    #122847;
+      --navy-light:  #1A3A5C;
+      --slate:       #3A506B;
+      --gold:        #C8963E;
+      --gold-light:  #E2B866;
+      --gold-pale:   #F5E6C8;
+      --bg:          #EDF1F5;
+      --bg-alt:      #FFFFFF;
+      --text:        #2D3748;
+      --text-light:  #8FA3B8;
+      --card-shadow: 0 4px 24px rgba(11,29,51,0.07);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Outfit', sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    /* ═══════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════ */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(11, 29, 51, 0.97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(200,150,62,0.15);
+      transition: box-shadow 0.3s;
     }
-
-    .logo {
-      font-weight: 700;
-      font-size: 18px;
-      color: var(--primary);
+    .navbar.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 68px;
     }
-
-    nav a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: var(--muted);
-      font-weight: 500;
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      color: var(--gold); font-size: 1.15rem;
+      letter-spacing: 0.02em; text-decoration: none;
     }
+    .nav-logo em { color: var(--gold-light); font-style: italic; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--text-light); text-decoration: none;
+      font-size: 0.84rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      transition: color 0.3s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      background: var(--gold) !important; color: var(--navy) !important;
+      padding: 0.5rem 1.2rem !important; border-radius: 4px;
+      font-weight: 600 !important; letter-spacing: 0.06em !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--gold-light) !important; transform: translateY(-1px); }
 
-    nav a:hover { color: var(--primary); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span { width: 24px; height: 2px; background: var(--gold); transition: 0.3s; }
 
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
     .hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      padding: 80px 40px;
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center;
+      background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 55%, var(--navy-light) 100%);
+      overflow: hidden;
+    }
+    .hero-grid {
+      position: absolute; inset: 0; opacity: 0.05;
+      background-image:
+        linear-gradient(var(--gold) 1px, transparent 1px),
+        linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(120px); opacity: 0.12; pointer-events: none;
+    }
+    .hero-orb-1 { width: 600px; height: 600px; top: -200px; right: -100px; background: var(--gold); }
+    .hero-orb-2 { width: 500px; height: 500px; bottom: -200px; left: -150px; background: #2E6B9E; }
+
+    .hero-inner {
+      position: relative; z-index: 2;
+      max-width: 1200px; margin: 0 auto;
+      padding: 9rem 2rem 6rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
       align-items: center;
-      gap: 40px;
+    }
+    .hero-label {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(200,150,62,0.1);
+      border: 1px solid rgba(200,150,62,0.25);
+      border-radius: 100px; padding: 0.4rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-label-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .hero-label span {
+      font-size: 0.73rem; font-weight: 600;
+      color: var(--gold-light); letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
     .hero h1 {
-      font-size: 40px;
-      margin-bottom: 20px;
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.5rem);
+      color: #FFFFFF; line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 em { color: var(--gold); font-style: italic; }
+    .hero-sub {
+      font-size: 1.05rem; line-height: 1.75;
+      color: var(--text-light); max-width: 520px;
+      margin-bottom: 2rem;
+    }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--gold); color: var(--navy);
+      padding: 0.8rem 1.6rem; border-radius: 5px;
+      font-weight: 600; font-size: 0.9rem;
+      text-decoration: none; letter-spacing: 0.03em;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--gold-light);
+      border: 1px solid rgba(200,150,62,0.35);
+      padding: 0.8rem 1.6rem; border-radius: 5px;
+      font-weight: 500; font-size: 0.9rem;
+      text-decoration: none; letter-spacing: 0.03em;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: #FFFFFF; }
+
+    .hero-badges { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .hero-badge {
+      background: rgba(200,150,62,0.12);
+      border: 1px solid rgba(200,150,62,0.2);
+      color: var(--gold-pale); font-size: 0.78rem;
+      font-weight: 600; padding: 0.35rem 0.85rem;
+      border-radius: 4px; letter-spacing: 0.03em;
     }
 
-    .hero p {
-      color: var(--muted);
-      margin-bottom: 30px;
+    /* Hero image placeholder */
+    .hero-visual {
+      position: relative; border-radius: 12px; overflow: hidden;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, rgba(200,150,62,0.08), rgba(26,58,92,0.25));
+      border: 1px solid rgba(200,150,62,0.15);
+    }
+    .hero-visual .img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 2rem;
+    }
+    .img-placeholder-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: rgba(200,150,62,0.15);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem; color: var(--gold);
+    }
+    .img-placeholder-label {
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--gold-light); letter-spacing: 0.04em;
+      margin-bottom: 0.35rem;
+    }
+    .img-placeholder-desc {
+      font-size: 0.72rem; color: var(--text-light);
+      max-width: 240px; line-height: 1.5;
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent);
-      color: white;
-      padding: 12px 18px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.2s;
-    }
-
-    .btn.secondary {
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-    }
-
-    .hero-graphic {
-      background: url('data-graphic.png') center/cover no-repeat;
-      border-radius: 16px;
-      height: 320px;
-    }
-
-    section {
-      padding: 60px 40px;
-    }
-
-    .section-title {
-      font-size: 28px;
-      margin-bottom: 30px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: white;
-      padding: 24px;
+    /* Light-bg image placeholder variant */
+    .img-placeholder-light {
+      background: var(--bg);
+      border: 2px dashed rgba(200,150,62,0.3);
       border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 2rem;
+      min-height: 220px;
+    }
+    .img-placeholder-light .img-placeholder-icon {
+      background: var(--gold-pale);
+    }
+    .img-placeholder-light .img-placeholder-label {
+      color: var(--navy);
+    }
+    .img-placeholder-light .img-placeholder-desc {
+      color: var(--slate);
     }
 
-    .badge-row {
-      display: flex;
-      gap: 20px;
-      margin-top: 20px;
-      flex-wrap: wrap;
+    /* Active images (replaces placeholders when filenames are set) */
+    .site-image {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      border-radius: inherit;
     }
 
-    .badge {
-      background: #e2e8f0;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 14px;
+    /* ═══════════════════════════════════════
+       SHARED SECTION STYLES
+    ═══════════════════════════════════════ */
+    .section { padding: 5.5rem 2rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow {
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 0.14em;
+      text-transform: uppercase; margin-bottom: 0.6rem;
+    }
+    .section-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+      color: var(--navy); line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    .section-desc {
+      font-size: 1rem; line-height: 1.75;
+      color: var(--slate); max-width: 600px;
+      margin-bottom: 2.75rem;
     }
 
-    footer {
-      background: var(--primary);
-      color: white;
+    /* Dark section variant */
+    .section-dark {
+      background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 100%);
+    }
+    .section-dark .section-eyebrow { color: var(--gold-light); }
+    .section-dark .section-heading { color: #FFFFFF; }
+    .section-dark .section-desc { color: var(--text-light); }
+
+    /* ═══════════════════════════════════════
+       CAPABILITIES CARDS
+    ═══════════════════════════════════════ */
+    #services { background: var(--bg-alt); }
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .cap-card {
+      background: #FFFFFF; border-radius: 10px;
+      border: 1px solid #E4E0D8;
+      padding: 2rem 1.75rem;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .cap-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; background: var(--gold);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .cap-card:hover::before { transform: scaleX(1); }
+    .cap-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 12px 36px rgba(200,150,62,0.1);
+      transform: translateY(-4px);
+    }
+    .cap-icon {
+      width: 42px; height: 42px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.1rem; color: var(--gold);
+    }
+    .cap-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem; color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+    .cap-card p { font-size: 0.9rem; line-height: 1.7; color: var(--slate); }
+
+    /* ═══════════════════════════════════════
+       WHY US — with image
+    ═══════════════════════════════════════ */
+    .why-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3.5rem; align-items: center;
+    }
+    .why-list { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+    .why-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(200,150,62,0.12);
+      border-radius: 8px; padding: 1.25rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .why-item:hover { border-color: rgba(200,150,62,0.35); transform: translateX(4px); }
+    .why-icon {
+      width: 36px; height: 36px; border-radius: 6px;
+      background: rgba(200,150,62,0.12);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--gold);
+    }
+    .why-item h4 { font-size: 0.95rem; color: #FFFFFF; font-weight: 600; margin-bottom: 0.15rem; }
+    .why-item p { font-size: 0.84rem; color: var(--text-light); margin: 0; }
+
+    /* ═══════════════════════════════════════
+       PROCESS — flowing card timeline
+    ═══════════════════════════════════════ */
+    #process { background: var(--bg-alt); }
+    .process-track {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+      position: relative;
+    }
+    /* Connecting line behind cards */
+    .process-track::before {
+      content: ''; position: absolute;
+      top: 38px; left: 6%; right: 6%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold-pale) 0%, var(--gold) 50%, var(--gold-pale) 100%);
+      opacity: 0.5;
+    }
+    .process-step {
+      position: relative;
+      background: #FFFFFF;
+      border: 1px solid #E4E0D8;
+      border-radius: 12px;
+      padding: 2rem 1.25rem 1.5rem;
       text-align: center;
-      padding: 30px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
     }
+    .process-step:hover {
+      border-color: var(--gold);
+      box-shadow: 0 8px 28px rgba(200,150,62,0.1);
+      transform: translateY(-4px);
+    }
+    .step-number {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--bg);
+      color: var(--gold);
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem; font-weight: 400;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+      position: relative; z-index: 2;
+      border: 2px solid var(--gold-pale);
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .process-step:hover .step-number {
+      background: var(--gold); color: #FFFFFF;
+      border-color: var(--gold);
+    }
+    /* Arrow between cards */
+    .process-step:not(:last-child)::after {
+      content: '→'; position: absolute;
+      right: -1.1rem; top: 2rem;
+      color: var(--gold); font-size: 1.1rem;
+      z-index: 3; opacity: 0.5;
+    }
+    .step-eyebrow {
+      font-size: 0.65rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 0.35rem;
+    }
+    .process-step h4 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem; color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+    .process-step p { font-size: 0.84rem; color: var(--slate); line-height: 1.6; }
 
-    @media(max-width: 768px) {
-      .hero { grid-template-columns: 1fr; }
+    /* ═══════════════════════════════════════
+       GOVERNMENT CONTRACTING — banner
+    ═══════════════════════════════════════ */
+    .gov-banner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: center;
+    }
+    .gov-text p {
+      font-size: 1rem; line-height: 1.8;
+      color: var(--text-light); margin-bottom: 1.25rem;
+    }
+    .gov-list {
+      list-style: none; display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .gov-list li {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.92rem; color: var(--text-light);
+    }
+    .gov-check {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(200,150,62,0.15);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .gov-check svg { width: 12px; height: 12px; color: var(--gold); }
+
+    /* ═══════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════ */
+    #contact { background: var(--bg-alt); text-align: center; }
+    .contact-email {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      color: var(--gold);
+      text-decoration: none; display: inline-block;
+      padding-bottom: 3px;
+      border-bottom: 2px solid rgba(200,150,62,0.3);
+      transition: border-color 0.3s, color 0.3s;
+      margin-bottom: 1rem;
+    }
+    .contact-email:hover { color: var(--gold-light); border-color: var(--gold); }
+    .contact-sub { font-size: 0.95rem; color: var(--slate); margin-bottom: 0.5rem; }
+    .contact-note { font-size: 0.85rem; color: var(--text-light); }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    footer {
+      background: var(--navy);
+      border-top: 3px solid var(--gold);
+      padding: 2rem; text-align: center;
+    }
+    footer p { font-size: 0.78rem; color: var(--text-light); letter-spacing: 0.04em; }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ═══════════════════════════════════════
+       SCROLL ANIMATIONS
+    ═══════════════════════════════════════ */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { max-width: 480px; }
+      .cap-grid { grid-template-columns: 1fr; }
+      .why-layout { grid-template-columns: 1fr; }
+      .gov-banner { grid-template-columns: 1fr; }
+      .process-track { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      .process-track::before { display: none; }
+      .process-step::after { display: none !important; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 68px; left: 0; right: 0;
+        background: rgba(11,29,51,0.98);
+        padding: 1.5rem 2rem; gap: 1.25rem;
+        border-bottom: 1px solid rgba(200,150,62,0.15);
+      }
+      .process-track { grid-template-columns: 1fr; gap: 1.25rem; }
+      .section { padding: 3.5rem 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">2 Steps Ahead Data Consulting</div>
-  <nav>
-    <a href="#services">Services</a>
-    <a href="#why">Why Us</a>
-    <a href="#process">Process</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">2 Steps Ahead <em>Data</em></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#gov">Government</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
 
+<!-- ═══ HERO ═══ -->
 <section class="hero">
-  <div>
-    <h1>Advanced Statistical Consulting for Scientific & Government Applications</h1>
-    <p>PhD-level expertise in experimental design, biostatistics, and data modeling supporting research organizations, federal agencies, and commercial clients.</p>
-    <a href="#contact" class="btn">Request Consultation</a>
-    <a href="#services" class="btn secondary">View Capabilities</a>
-
-    <div class="badge-row">
-      <div class="badge">PhD Statistician</div>
-      <div class="badge">20+ Years Experience</div>
-      <div class="badge">WOSB (In Progress)</div>
+  <div class="hero-grid"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-label">
+        <div class="hero-label-dot"></div>
+        <span>Government Contracting Ready</span>
+      </div>
+      <h1>Advanced Statistical Consulting for Scientific &amp; <em>Government Applications</em></h1>
+      <p class="hero-sub">We're a small, specialized team of PhD biostatisticians with over two decades in federal research. Whether you're designing a multi-site trial or need an independent review before submission, we bring the analytical rigor — and speak your language.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-primary">Request Consultation &#8594;</a>
+        <a href="#services" class="btn-outline">View Capabilities</a>
+      </div>
+      <div class="hero-badges">
+        <div class="hero-badge">PhD Statistician</div>
+        <div class="hero-badge">20+ Years Experience</div>
+        <div class="hero-badge">WOSB (In Progress)</div>
+      </div>
     </div>
-  </div>
-  <div class="hero-graphic"></div>
-</section>
-
-<section id="services">
-  <h2 class="section-title">Capabilities</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>Statistical Consulting</h3>
-      <p>Experimental design (DOE), statistical analysis plans, mixed models, and GLMs.</p>
-    </div>
-    <div class="card">
-      <h3>Data Science & Modeling</h3>
-      <p>Advanced modeling using R, Python, and SAS including machine learning and Bayesian methods.</p>
-    </div>
-    <div class="card">
-      <h3>Research & Government Support</h3>
-      <p>Support for federal research, grants, and audit-ready statistical workflows.</p>
-    </div>
-    <div class="card">
-      <h3>Training & Mentorship</h3>
-      <p>Workshops and training to improve statistical literacy and software proficiency.</p>
+    <div class="hero-visual">
+      <!-- ▸ IMAGE PLACEHOLDER #1 — HERO -->
+      <div class="img-placeholder" data-image-slot="hero">
+        <div class="img-placeholder-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 3v18h18M7 16l4-4 4 4 6-6"/></svg>
+        </div>
+        <div class="img-placeholder-label">Hero Image</div>
+        <div class="img-placeholder-desc">Replace with: Abstract data visualization on a dark background — think scatter plot matrix, network graph, or statistical heatmap in navy/gold/teal tones. Avoid stock "hologram hands" imagery.</div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="why">
-  <h2 class="section-title">Why 2 Steps Ahead</h2>
-  <div class="grid">
-    <div class="card">
-      <p>20+ years supporting federal research organizations</p>
-    </div>
-    <div class="card">
-      <p>Experience supporting 150+ scientists across distributed teams</p>
-    </div>
-    <div class="card">
-      <p>Deep expertise in life sciences, agriculture, and environmental systems</p>
-    </div>
-    <div class="card">
-      <p>Focus on reproducibility, rigor, and defensible analysis</p>
+<!-- ═══ CAPABILITIES ═══ -->
+<section class="section" id="services">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">What We Do</div>
+    <h2 class="section-heading reveal">Capabilities</h2>
+    <p class="section-desc reveal">We don't just run models — we help you choose the right design, the right method, and the right interpretation. Here's what that looks like in practice.</p>
+    <div class="cap-grid">
+      <div class="cap-card reveal">
+        <div class="cap-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 017 7h2m6 0h2a5 5 0 010 10h-2M8 12h8"/></svg>
+        </div>
+        <h3>Statistical Consulting</h3>
+        <p>We help you ask the right question and design the study to answer it — from power analysis and randomization schemes to full statistical analysis plans (SAPs) using mixed models, GLMs, and DOE frameworks like split-plot and RCBD.</p>
+      </div>
+      <div class="cap-card reveal reveal-delay-1">
+        <div class="cap-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 3v18h18M7 16l4-4 4 4 6-6"/></svg>
+        </div>
+        <h3>Data Science &amp; Modeling</h3>
+        <p>From Bayesian hierarchical models to random forests and penalized regression, we match the right method to your data — not the other way around. Fluent in R, Python, SAS, and SQL across high-variability, small-sample biological datasets.</p>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3>Research &amp; Government Support</h3>
+        <p>We know how federal research works — from USDA-ARS multi-location trials to SBIR proposals. Our deliverables are audit-ready, compliant with agency documentation standards, and built for peer review scrutiny.</p>
+      </div>
+      <div class="cap-card reveal reveal-delay-1">
+        <div class="cap-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <h3>Training &amp; Mentorship</h3>
+        <p>We've trained hundreds of researchers and program managers on everything from interpreting ANOVA tables to building reproducible analysis pipelines. Custom workshops in R, SAS, JMP, and core statistical methodology — tailored to your team's level.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="process">
-  <h2 class="section-title">Approach</h2>
-  <div class="grid">
-    <div class="card"><p>Define Research Objectives</p></div>
-    <div class="card"><p>Design Statistically Sound Approach</p></div>
-    <div class="card"><p>Analyze & Model Data</p></div>
-    <div class="card"><p>Interpret & Communicate Results</p></div>
+<!-- ═══ WHY US ═══ -->
+<section class="section section-dark" id="why">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">The Difference</div>
+    <h2 class="section-heading reveal">Why 2 Steps Ahead</h2>
+    <p class="section-desc reveal">You don't need another analytics vendor. You need a collaborator who understands your science and can translate it into sound statistical practice.</p>
+    <div class="why-layout">
+      <div>
+        <ul class="why-list">
+          <li class="why-item reveal">
+            <div class="why-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/></svg></div>
+            <div><h4>Federal Research Heritage</h4><p>20+ years as Area Statistician for USDA-ARS — we understand the pace, politics, and rigor of government-funded science</p></div>
+          </li>
+          <li class="why-item reveal reveal-delay-1">
+            <div class="why-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg></div>
+            <div><h4>150+ Principal Investigators Supported</h4><p>Collaborative experience across 22 research locations, distributed teams, and multi-year study designs</p></div>
+          </li>
+          <li class="why-item reveal reveal-delay-2">
+            <div class="why-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+            <div><h4>Deep Domain Expertise</h4><p>We don't need a crash course in your field — our background spans life sciences, ag systems, genomics, and environmental research</p></div>
+          </li>
+          <li class="why-item reveal reveal-delay-3">
+            <div class="why-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div>
+            <div><h4>Reproducibility First</h4><p>Every analysis is version-controlled, documented, and built to withstand peer review, audits, and replication</p></div>
+          </li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <!-- ▸ IMAGE PLACEHOLDER #2 — WHY US -->
+        <div class="img-placeholder" data-image-slot="whyUs" style="aspect-ratio:1/1; border-radius:12px; border:1px solid rgba(200,150,62,0.15);">
+          <div class="img-placeholder-icon">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="img-placeholder-label">Team / Credibility Image</div>
+          <div class="img-placeholder-desc">Replace with: A researcher working at a computer with statistical software (R/SAS) visible on screen, or a clean overhead shot of a desk with printed charts, a laptop, and a notebook. Cool tones preferred.</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section>
-  <h2 class="section-title">Government Contracting</h2>
-  <p>2 Steps Ahead Data Consulting is a Woman-Owned Small Business (WOSB) in progress, positioned to support federal agencies and contractors.</p>
-  <ul>
-    <li>Federal research experience (USDA ecosystem)</li>
-    <li>Available for subcontracting and direct engagements</li>
-    <li>SBIR/STTR and proposal support</li>
-  </ul>
+<!-- ═══ PROCESS ═══ -->
+<section class="section" id="process">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">How We Work</div>
+    <h2 class="section-heading reveal">From Question to Conclusion</h2>
+    <p class="section-desc reveal">Every engagement follows a structured, transparent path — so you know exactly where your project stands and what comes next.</p>
+    <div class="process-track">
+      <div class="process-step reveal">
+        <div class="step-number">1</div>
+        <div class="step-eyebrow">Scoping</div>
+        <h4>Define the Question</h4>
+        <p>We start by understanding your research objectives, constraints, and what a successful outcome looks like — whether that's a power analysis for a new trial or a modeling strategy for existing data.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-number">2</div>
+        <div class="step-eyebrow">Design</div>
+        <h4>Build the Analytical Framework</h4>
+        <p>We develop a statistical analysis plan (SAP) tailored to your study — selecting appropriate designs (split-plot, RCBD, repeated measures) and specifying models, assumptions, and validation approaches up front.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-number">3</div>
+        <div class="step-eyebrow">Execution</div>
+        <h4>Analyze &amp; Model</h4>
+        <p>Analysis runs in reproducible, version-controlled code (R, Python, or SAS). We fit the agreed-upon models — mixed-effects, GLMMs, Bayesian hierarchical, or ML pipelines — and run diagnostics at every stage.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-number">4</div>
+        <div class="step-eyebrow">Delivery</div>
+        <h4>Interpret &amp; Communicate</h4>
+        <p>You receive clear, actionable results — not just p-values and tables. We deliver annotated reports, visualizations, and documented code so your team (or reviewers) can reproduce every finding.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section id="contact">
-  <h2 class="section-title">Contact</h2>
-  <p>Email: info@2sa-dc.com</p>
-  <p>Serving clients nationwide</p>
-  <p><strong>Booking:</strong> Microsoft Bookings link coming soon</p>
+<!-- ═══ GOVERNMENT CONTRACTING ═══ -->
+<section class="section section-dark" id="gov">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Federal Capability</div>
+    <h2 class="section-heading reveal">Government Contracting</h2>
+    <div class="gov-banner">
+      <div class="gov-text reveal">
+        <p>2 Steps Ahead Data Consulting is a Woman-Owned Small Business (WOSB) in progress, built specifically to serve federal agencies and prime contractors who need embedded statistical expertise — not a generalist data vendor.</p>
+        <ul class="gov-list">
+          <li>
+            <div class="gov-check"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+            Deep institutional knowledge of the USDA-ARS research ecosystem
+          </li>
+          <li>
+            <div class="gov-check"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+            Available for direct engagements, subcontracting, and teaming arrangements
+          </li>
+          <li>
+            <div class="gov-check"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+            SBIR/STTR statistical support and proposal-stage consultation
+          </li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <!-- ▸ IMAGE PLACEHOLDER #3 — GOVERNMENT -->
+        <div class="img-placeholder" data-image-slot="government" style="aspect-ratio:4/3; border-radius:12px; border:1px solid rgba(200,150,62,0.15);">
+          <div class="img-placeholder-icon">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div class="img-placeholder-label">Government / Federal Image</div>
+          <div class="img-placeholder-desc">Replace with: Exterior of a federal research building, USDA facility, or a professional meeting room setting. Clean, institutional, modern. Alternatively, an agricultural research field with data overlay aesthetic.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- ═══ CONTACT ═══ -->
+<section class="section" id="contact">
+  <div class="section-inner" style="text-align:center;">
+    <div class="section-eyebrow reveal">Let's Work Together</div>
+    <h2 class="section-heading reveal" style="margin-left:auto;margin-right:auto;">Ready to Get Started?</h2>
+    <p class="section-desc reveal" style="margin-left:auto;margin-right:auto;">Whether you're scoping a new study, need a second set of eyes on an analysis plan, or want a long-term statistical partner — we'd enjoy the conversation.</p>
+    <div class="reveal">
+      <a href="mailto:info@2sa-dc.com" class="contact-email">info@2sa-dc.com</a>
+    </div>
+    <p class="contact-sub reveal">Serving clients nationwide</p>
+    <p class="contact-note reveal"><strong>Booking:</strong> Microsoft Bookings link coming soon</p>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
 <footer>
-  <p>© 2026 2 Steps Ahead Data Consulting, LLC</p>
+  <p>&copy; 2026 2 Steps Ahead Data Consulting, LLC &ensp;|&ensp; <a href="https://www.linkedin.com/in/kmyeater2025/" target="_blank" rel="noopener">LinkedIn</a></p>
 </footer>
 
+<!-- ═══ SCRIPTS ═══ -->
 <script>
-  lucide.createIcons();
+  /* ═══════════════════════════════════════════════════════════════
+     IMAGE CONFIGURATION
+     ─────────────────────────────────────────────────────────────
+     Set each variable to your image filename (e.g. "hero-data-viz.jpg").
+     Images should be placed in the same directory as this HTML file,
+     or use a relative path (e.g. "images/hero-data-viz.jpg").
+
+     Leave a value as "" to keep the placeholder visible.
+  ═══════════════════════════════════════════════════════════════ */
+
+  const SITE_IMAGES = {
+
+    // IMAGE 1 — HERO (right column of the top banner)
+    // Recommended: Abstract data visualization on a dark background —
+    //   scatter plot matrix, network graph, or statistical heatmap.
+    //   Navy/gold/teal tones. Avoid "hologram hands" stock imagery.
+    // Aspect ratio: 4:3  |  Suggested min size: 800×600px
+    hero: "",
+
+    // IMAGE 2 — WHY US (beside the four differentiator cards)
+    // Recommended: Researcher at a computer with statistical software
+    //   (R or SAS) visible on screen, OR a clean overhead desk shot
+    //   with printed charts, a laptop, and a notebook. Cool tones.
+    // Aspect ratio: 1:1  |  Suggested min size: 600×600px
+    whyUs: "",
+
+    // IMAGE 3 — GOVERNMENT CONTRACTING (beside the federal checklist)
+    // Recommended: Exterior of a federal research building or USDA
+    //   facility, a professional meeting room, or an agricultural
+    //   research field. Clean, institutional, modern.
+    // Aspect ratio: 4:3  |  Suggested min size: 800×600px
+    government: "",
+
+  };
+
+  /* ═══════════════════════════════════════════════════════════════
+     END OF CONFIGURATION — no need to edit below this line
+  ═══════════════════════════════════════════════════════════════ */
+
+  // Swap placeholders for real images when a filename is provided
+  document.querySelectorAll('[data-image-slot]').forEach(placeholder => {
+    const slot = placeholder.dataset.imageSlot;
+    const src = SITE_IMAGES[slot];
+    if (src && src.trim() !== '') {
+      const img = document.createElement('img');
+      img.src = src.trim();
+      img.alt = {
+        hero: '2 Steps Ahead Data Consulting — data visualization',
+        whyUs: '2 Steps Ahead Data Consulting — statistical research',
+        government: '2 Steps Ahead Data Consulting — federal research'
+      }[slot] || '2 Steps Ahead Data Consulting';
+      img.className = 'site-image';
+      img.loading = 'lazy';
+      placeholder.replaceWith(img);
+    }
+  });
+
+  // Scroll shadow on nav
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => navLinks.classList.remove('open'))
+  );
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 
 </body>
