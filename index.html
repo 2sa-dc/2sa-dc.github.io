@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,11 +56,13 @@
       padding: 0 2rem; height: 68px;
     }
     .nav-logo {
-      font-family: 'DM Serif Display', serif;
-      color: var(--gold); font-size: 1.15rem;
-      letter-spacing: 0.02em; text-decoration: none;
+      display: flex; align-items: center;
+      text-decoration: none;
     }
-    .nav-logo em { color: var(--gold-light); font-style: italic; }
+    .nav-logo-img {
+      height: 40px; width: auto;
+      display: block;
+    }
     .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
     .nav-links a {
       color: var(--text-light); text-decoration: none;
@@ -119,6 +121,20 @@
       display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
       align-items: center;
     }
+    .hero-company {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      color: var(--gold-light); letter-spacing: 0.04em;
+      margin-bottom: 0.25rem; opacity: 0.9;
+    }
+    .hero-tagline {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem; font-weight: 400;
+      color: var(--text-light); font-style: italic;
+      letter-spacing: 0.06em;
+      margin-bottom: 1.25rem;
+    }
+
     .hero-label {
       display: inline-flex; align-items: center; gap: 0.5rem;
       background: rgba(200,150,62,0.1);
@@ -144,7 +160,6 @@
       margin-bottom: 1.25rem;
     }
     .hero h1 em { color: var(--gold); font-style: italic; }
-    .hero h2 em { color: var(--gold); font-style: italic; }
     .hero-sub {
       font-size: 1.05rem; line-height: 1.75;
       color: var(--text-light); max-width: 520px;
@@ -439,8 +454,29 @@
       margin-bottom: 1rem;
     }
     .contact-email:hover { color: var(--gold-light); border-color: var(--gold); }
-    .contact-sub { font-size: 0.95rem; color: var(--slate); margin-bottom: 0.5rem; }
+    .contact-sub { font-size: 0.95rem; color: var(--slate); margin-bottom: 1.5rem; }
     .contact-note { font-size: 0.85rem; color: var(--text-light); }
+    .contact-booking {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--gold); color: var(--navy);
+      padding: 0.85rem 2rem; border-radius: 5px;
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none; letter-spacing: 0.03em;
+      transition: background 0.3s, transform 0.2s;
+      margin-top: 0.5rem;
+    }
+    .contact-booking:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .contact-booking svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .contact-divider {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 1.75rem auto; max-width: 280px;
+      color: var(--text-light); font-size: 0.78rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .contact-divider::before, .contact-divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: rgba(58,80,107,0.25);
+    }
 
     /* ═══════════════════════════════════════
        FOOTER
@@ -452,6 +488,11 @@
     }
     footer p { font-size: 0.78rem; color: var(--text-light); letter-spacing: 0.04em; }
     footer a { color: var(--gold); text-decoration: none; }
+    .footer-logo-wrap { margin-bottom: 1rem; }
+    .footer-logo-img {
+      height: 36px; width: auto;
+      display: inline-block; opacity: 0.85;
+    }
 
     /* ═══════════════════════════════════════
        SCROLL ANIMATIONS
@@ -461,6 +502,8 @@
       transition: opacity 0.7s ease-out, transform 0.7s ease-out;
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* Fallback: if JS hasn't run after load, show everything */
+    .no-js .reveal { opacity: 1; transform: none; transition: none; }
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
@@ -498,7 +541,9 @@
 <!-- ═══ NAVIGATION ═══ -->
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
-    <a href="#" class="nav-logo">2 Steps Ahead Data Consulting</a>
+    <a href="#" class="nav-logo">
+      <img src="images/2sa-dc-logo.png" alt="2 Steps Ahead Data Consulting" class="nav-logo-img">
+    </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#services">Services</a></li>
       <li><a href="#why">Why Us</a></li>
@@ -519,12 +564,13 @@
   <div class="hero-orb hero-orb-2"></div>
   <div class="hero-inner">
     <div>
+      <div class="hero-company">2 Steps Ahead Data Consulting</div>
+      <div class="hero-tagline">Always Stay Two Steps Ahead</div>
       <div class="hero-label">
         <div class="hero-label-dot"></div>
         <span>Government Contracting Ready</span>
       </div>
       <h1>Advanced Statistical Consulting for Scientific &amp; Government Applications</h1>
-      <h2><em>Always Stay Two Steps Ahead</em></h2>
       <p class="hero-sub">We're a small, specialized team of PhD biostatisticians with over two decades in federal research. Whether you're designing a multi-site trial or need an independent review before submission, we bring the analytical rigor — and speak your language.</p>
       <div class="hero-buttons">
         <a href="#contact" class="btn-primary">Request Consultation &#8594;</a>
@@ -708,31 +754,46 @@
     <h2 class="section-heading reveal" style="margin-left:auto;margin-right:auto;">Ready to Get Started?</h2>
     <p class="section-desc reveal" style="margin-left:auto;margin-right:auto;">Whether you're scoping a new study, need a second set of eyes on an analysis plan, or want a long-term statistical partner — we'd enjoy the conversation.</p>
     <div class="reveal">
+      <a href="https://outlook.office.com/bookwithme/user/df5abc218d9e4946a1b038e3bcfd6645%402sa-dc.com?anonymous&ismsaljsauthenabled" target="_blank" rel="noopener" class="contact-booking">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+        Schedule a Consultation
+      </a>
+    </div>
+    <div class="contact-divider reveal">or</div>
+    <div class="reveal">
       <a href="mailto:info@2sa-dc.com" class="contact-email">info@2sa-dc.com</a>
     </div>
-    <p class="contact-sub reveal">Serving clients nationwide</p>
-    <p class="contact-note reveal"><strong>Book A Meeting: </strong><a href="https://outlook.office.com/bookwithme/user/df5abc218d9e4946a1b038e3bcfd6645%402sa-dc.com?anonymous&ismsaljsauthenabled" target="_blank" rel="noopener">Microsoft Bookings</a></p>
+    <p class="contact-sub reveal">Based in Virginia, serving clients worldwide</p>
   </div>
 </section>
 
 <!-- ═══ FOOTER ═══ -->
 <footer>
+  <div class="footer-logo-wrap">
+    <img src="images/2sa-dc-logo.png" alt="2 Steps Ahead Data Consulting" class="footer-logo-img">
+  </div>
   <p>&copy; 2026 2 Steps Ahead Data Consulting, LLC &ensp;|&ensp; <a href="https://www.linkedin.com/in/kmyeater2025/" target="_blank" rel="noopener">LinkedIn</a></p>
 </footer>
 
 <!-- ═══ SCRIPTS ═══ -->
 <script>
+  // Remove no-js fallback now that JS is running
+  document.documentElement.classList.remove('no-js');
+
   /* ═══════════════════════════════════════════════════════════════
      IMAGE CONFIGURATION
      ─────────────────────────────────────────────────────────────
-     Set each variable to your image filename (e.g. "hero-data-viz.jpg").
-     Images should be placed in the same directory as this HTML file,
-     or use a relative path (e.g. "images/hero-data-viz.jpg").
+     Set each variable to your image filename with the images/ prefix
+     (e.g. "images/hero-data-viz.jpg").
 
      Leave a value as "" to keep the placeholder visible.
   ═══════════════════════════════════════════════════════════════ */
 
   const SITE_IMAGES = {
+
+    // NOTE: Logo is hardcoded in the HTML (nav and footer) at images/2sa-dc-logo.png.
+    // To change the logo filename, update the <img src="..."> tags
+    // in the nav and footer sections directly.
 
     // IMAGE 1 — HERO (right column of the top banner)
     // Recommended: Abstract data visualization on a dark background —
@@ -792,11 +853,4 @@
   );
 
   // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
-
-</body>
-</html>
+  const observer = new IntersectionObserver((entri
