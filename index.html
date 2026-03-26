@@ -247,9 +247,9 @@
 
     /* Active images (replaces placeholders when filenames are set) */
     .site-image {
-      width: 100%; height: 100%;
+      width: 100%;
       object-fit: cover; display: block;
-      border-radius: inherit;
+      border-radius: 12px;
     }
 
     /* ═══════════════════════════════════════
@@ -583,8 +583,8 @@
       </div>
     </div>
     <div class="hero-visual">
-      <!-- ▸ IMAGE PLACEHOLDER #1 — HERO -->
-      <div class="img-placeholder" data-image-slot="hero">
+      <!-- ▸ HERO IMAGE -->
+      <div class="img-placeholder" data-image-slot="hero" style="aspect-ratio:4/3; border-radius:12px;">
         <div class="img-placeholder-icon">
           <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 3v18h18M7 16l4-4 4 4 6-6"/></svg>
         </div>
@@ -662,13 +662,13 @@
         </ul>
       </div>
       <div class="reveal">
-        <!-- ▸ IMAGE PLACEHOLDER #2 — WHY US -->
+        <!-- WHY US IMAGE -->
         <div class="img-placeholder" data-image-slot="whyUs" style="aspect-ratio:1/1; border-radius:12px; border:1px solid rgba(200,150,62,0.15);">
           <div class="img-placeholder-icon">
             <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
           </div>
           <div class="img-placeholder-label">Team / Credibility Image</div>
-          <div class="img-placeholder-desc">Replace with: A researcher working at a computer with statistical software (R/SAS) visible on screen, or a clean overhead shot of a desk with printed charts, a laptop, and a notebook. Cool tones preferred.</div>
+          <div class="img-placeholder-desc">Set whyUs in SITE_IMAGES to display</div>
         </div>
       </div>
     </div>
@@ -734,13 +734,13 @@
         </ul>
       </div>
       <div class="reveal">
-        <!-- ▸ IMAGE PLACEHOLDER #3 — GOVERNMENT -->
+        <!-- GOVERNMENT IMAGE -->
         <div class="img-placeholder" data-image-slot="government" style="aspect-ratio:4/3; border-radius:12px; border:1px solid rgba(200,150,62,0.15);">
           <div class="img-placeholder-icon">
             <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
           </div>
           <div class="img-placeholder-label">Government / Federal Image</div>
-          <div class="img-placeholder-desc">Replace with: Exterior of a federal research building, USDA facility, or a professional meeting room setting. Clean, institutional, modern. Alternatively, an agricultural research field with data overlay aesthetic.</div>
+          <div class="img-placeholder-desc">Set government in SITE_IMAGES to display</div>
         </div>
       </div>
     </div>
@@ -783,68 +783,78 @@
   /* ═══════════════════════════════════════════════════════════════
      IMAGE CONFIGURATION
      ─────────────────────────────────────────────────────────────
-     Set each variable to your image filename with the images/ prefix
-     (e.g. "images/hero-data-viz.jpg").
+     Set each variable to the image path relative to index.html.
+     All images live in the images/ subdirectory.
 
      Leave a value as "" to keep the placeholder visible.
+
+     Logo is hardcoded in the HTML (nav + footer) so it renders
+     even when scripts are blocked. To change the logo filename,
+     edit the <img src="..."> tags directly (search "nav-logo-img"
+     and "footer-logo-img").
   ═══════════════════════════════════════════════════════════════ */
 
   const SITE_IMAGES = {
 
-    // NOTE: Logo is hardcoded in the HTML (nav and footer) at images/2sa-dc-logo.png.
-    // To change the logo filename, update the <img src="..."> tags
-    // in the nav and footer sections directly.
+    // HERO — right column of the top banner
+    // Recommended: Abstract data visualization on dark background
+    // Aspect ratio: 4:3  |  Min size: 800×600px
+    hero: "images/hero.png",
 
-    // IMAGE 1 — HERO (right column of the top banner)
-    // Recommended: Abstract data visualization on a dark background —
-    //   scatter plot matrix, network graph, or statistical heatmap.
-    //   Navy/gold/teal tones. Avoid "hologram hands" stock imagery.
-    // Aspect ratio: 4:3  |  Suggested min size: 800×600px
-    hero: "",
+    // WHY US — beside the four differentiator cards
+    // Recommended: Researcher at computer with R/SAS visible
+    // Aspect ratio: 1:1  |  Min size: 600×600px
+    whyUs: "images/why-us.png",
 
-    // IMAGE 2 — WHY US (beside the four differentiator cards)
-    // Recommended: Researcher at a computer with statistical software
-    //   (R or SAS) visible on screen, OR a clean overhead desk shot
-    //   with printed charts, a laptop, and a notebook. Cool tones.
-    // Aspect ratio: 1:1  |  Suggested min size: 600×600px
-    whyUs: "",
-
-    // IMAGE 3 — GOVERNMENT CONTRACTING (beside the federal checklist)
-    // Recommended: Exterior of a federal research building or USDA
-    //   facility, a professional meeting room, or an agricultural
-    //   research field. Clean, institutional, modern.
-    // Aspect ratio: 4:3  |  Suggested min size: 800×600px
-    government: "",
+    // GOVERNMENT — beside the federal checklist
+    // Recommended: Federal building, USDA facility, or ag research field
+    // Aspect ratio: 4:3  |  Min size: 800×600px
+    government: "images/field-research.png",
 
   };
 
   /* ═══════════════════════════════════════════════════════════════
-     END OF CONFIGURATION — no need to edit below this line
+     IMAGE SWAP — no need to edit below this line
   ═══════════════════════════════════════════════════════════════ */
 
-  // Swap placeholders for real images when a filename is provided
+  const IMAGE_ALT = {
+    hero:       '2 Steps Ahead Data Consulting — data visualization',
+    whyUs:      '2 Steps Ahead Data Consulting — statistical research',
+    government: '2 Steps Ahead Data Consulting — federal research'
+  };
+
   document.querySelectorAll('[data-image-slot]').forEach(placeholder => {
     const slot = placeholder.dataset.imageSlot;
-    const src = SITE_IMAGES[slot];
-    if (src && src.trim() !== '') {
-      const img = document.createElement('img');
-      img.src = src.trim();
-      img.alt = {
-        hero: '2 Steps Ahead Data Consulting — data visualization',
-        whyUs: '2 Steps Ahead Data Consulting — statistical research',
-        government: '2 Steps Ahead Data Consulting — federal research'
-      }[slot] || '2 Steps Ahead Data Consulting';
-      img.className = 'site-image';
-      img.loading = 'lazy';
-      placeholder.replaceWith(img);
+    const src  = SITE_IMAGES[slot];
+    if (!src || src.trim() === '') return;
+
+    const img = document.createElement('img');
+    img.src = src.trim();
+    img.alt = IMAGE_ALT[slot] || '2 Steps Ahead Data Consulting';
+    img.className = 'site-image';
+    img.loading = (slot === 'hero') ? 'eager' : 'lazy';
+
+    // Carry over inline styles from the placeholder (aspect-ratio, border-radius)
+    if (placeholder.style.cssText) {
+      img.style.cssText = placeholder.style.cssText;
     }
+
+    // Handle load failure — leave placeholder visible
+    img.onerror = () => {
+      img.remove();
+      placeholder.style.display = '';
+    };
+
+    // Hide placeholder, show image
+    placeholder.style.display = 'none';
+    placeholder.parentNode.insertBefore(img, placeholder);
   });
 
-  // Scroll shadow on nav
+  // ─── Nav scroll shadow ───
   const nav = document.getElementById('navbar');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
 
-  // Hamburger
+  // ─── Hamburger menu ───
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
   hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
@@ -852,5 +862,12 @@
     a.addEventListener('click', () => navLinks.classList.remove('open'))
   );
 
-  // Scroll reveal
-  const observer = new IntersectionObserver((entri
+  // ─── Scroll reveal ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
