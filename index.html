@@ -439,6 +439,53 @@
     }
     .gov-check svg { width: 12px; height: 12px; color: var(--gold); }
 
+    /* Government registration data */
+    .gov-credentials {
+      margin-top: 2.5rem;
+    }
+    .gov-credentials-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem; color: #FFFFFF;
+      margin-bottom: 1.25rem;
+    }
+    .gov-reg-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .gov-reg-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(200,150,62,0.12);
+      border-radius: 8px; padding: 1rem 1.15rem;
+    }
+    .gov-reg-label {
+      font-size: 0.65rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 0.25rem;
+    }
+    .gov-reg-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem; color: #FFFFFF;
+      letter-spacing: 0.03em;
+    }
+    .gov-naics {
+      grid-column: 1 / -1;
+    }
+    .gov-naics-list {
+      list-style: none; display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .gov-naics-item {
+      display: flex; gap: 0.75rem; align-items: baseline;
+    }
+    .gov-naics-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem; color: var(--gold-light);
+      font-weight: 500; flex-shrink: 0;
+      min-width: 5.5ch;
+    }
+    .gov-naics-desc {
+      font-size: 0.82rem; color: var(--text-light);
+    }
+
     /* ═══════════════════════════════════════
        CONTACT
     ═══════════════════════════════════════ */
@@ -517,6 +564,7 @@
       .cap-grid { grid-template-columns: 1fr; }
       .why-layout { grid-template-columns: 1fr; }
       .gov-banner { grid-template-columns: 1fr; }
+      .gov-reg-grid { grid-template-columns: 1fr; }
       .process-track { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
       .process-track::before { display: none; }
       .process-step::after { display: none !important; }
@@ -716,22 +764,62 @@
     <div class="section-eyebrow reveal">Federal Capability</div>
     <h2 class="section-heading reveal">Government Contracting</h2>
     <div class="gov-banner">
-      <div class="gov-text reveal">
-        <p>2 Steps Ahead Data Consulting is a Woman-Owned Small Business (WOSB) in progress, built specifically to serve federal agencies and prime contractors who need embedded statistical expertise — not a generalist data vendor.</p>
-        <ul class="gov-list">
-          <li>
-            <div class="gov-check"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
-            Deep institutional knowledge of the USDA-ARS research ecosystem
-          </li>
-          <li>
-            <div class="gov-check"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
-            Available for direct engagements, subcontracting, and teaming arrangements
-          </li>
-          <li>
-            <div class="gov-check"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
-            SBIR/STTR statistical support and proposal-stage consultation
-          </li>
-        </ul>
+      <div>
+        <div class="gov-text reveal">
+          <p>2 Steps Ahead Data Consulting is a Woman-Owned Small Business (WOSB) in progress, built specifically to serve federal agencies and prime contractors who need embedded statistical expertise — not a generalist data vendor.</p>
+          <ul class="gov-list">
+            <li>
+              <div class="gov-check"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+              Deep institutional knowledge of the USDA-ARS research ecosystem
+            </li>
+            <li>
+              <div class="gov-check"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+              Available for direct engagements, subcontracting, and teaming arrangements
+            </li>
+            <li>
+              <div class="gov-check"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+              SBIR/STTR statistical support and proposal-stage consultation
+            </li>
+          </ul>
+        </div>
+        <div class="gov-credentials reveal">
+          <h3 class="gov-credentials-heading">Registration &amp; Certifications</h3>
+          <div class="gov-reg-grid">
+            <div class="gov-reg-item">
+              <div class="gov-reg-label">SAM UEI</div>
+              <div class="gov-reg-value">WD7XQ2GET2D1</div>
+            </div>
+            <div class="gov-reg-item">
+              <div class="gov-reg-label">CAGE Code</div>
+              <div class="gov-reg-value">1AJA1</div>
+            </div>
+            <div class="gov-reg-item">
+              <div class="gov-reg-label">Business Type</div>
+              <div class="gov-reg-value">Small Business</div>
+            </div>
+            <div class="gov-reg-item">
+              <div class="gov-reg-label">Designation</div>
+              <div class="gov-reg-value">WOSB (In Progress)</div>
+            </div>
+            <div class="gov-reg-item gov-naics">
+              <div class="gov-reg-label">NAICS Codes</div>
+              <ul class="gov-naics-list">
+                <li class="gov-naics-item">
+                  <span class="gov-naics-code">541690</span>
+                  <span class="gov-naics-desc">Other Scientific &amp; Technical Consulting Services</span>
+                </li>
+                <li class="gov-naics-item">
+                  <span class="gov-naics-code">541714</span>
+                  <span class="gov-naics-desc">R&amp;D in Biotechnology (except Nanobiotechnology)</span>
+                </li>
+                <li class="gov-naics-item">
+                  <span class="gov-naics-code">541715</span>
+                  <span class="gov-naics-desc">R&amp;D in Physical, Engineering &amp; Life Sciences (except Nanotech &amp; Biotech)</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="reveal">
         <!-- GOVERNMENT IMAGE -->
